@@ -25,6 +25,30 @@ const arr = [
   },
 ];
 
+const checkTodo = (i) => {
+  const newAr = arr.map((elem, index) => {
+    if (i == index) {
+      elem.done = !elem.done;
+      return elem;
+    }
+    return elem;
+  });
+  render(newAr);
+};
+
+const addTodo = () => {
+  if (inp.value == "") {
+    alert("Необходимо ввести текст");
+  } else {
+    arr.push({
+      text: inp.value,
+      done: false,
+    });
+    inp.value = "";
+    render(arr);
+  }
+};
+
 const inp = document.querySelector("#text_todo");
 const btn = document.querySelector("#btn");
 const list = document.querySelector("#list");
@@ -41,6 +65,8 @@ const render = (array) => {
 
     const div_list = document.createElement("div");
     div_list.textContent = array[i].text;
+
+    inputCheck.checked ? (div_list.classList = "check") : null;
 
     list.append(div_list);
     div_list.append(deleteTodo);
@@ -64,14 +90,9 @@ const render = (array) => {
     inputCheck.style.width = "20px";
     inputCheck.style.height = "20px";
 
-    deleteTodo.addEventListener("click", (e) => {
-      remove(i);
-    });
+    deleteTodo.addEventListener("click", () => remove(i));
 
-    inputCheck.addEventListener("click", (e) => {
-      e.target.parentElement.classList.toggle("check");
-      checkTodo(i);
-    });
+    inputCheck.addEventListener("click", () => checkTodo(i));
   }
 };
 render(arr);
@@ -81,29 +102,4 @@ const remove = (i) => {
   render(arr);
 };
 
-btn.addEventListener("click", () => {
-  const addTodo = (string) => {
-    if (inp.value == "") {
-      alert("Необходимо ввести текст");
-    } else {
-      arr.push({
-        text: inp.value,
-        done: false,
-      });
-      inp.value = "";
-      render(arr);
-    }
-  };
-
-  addTodo(inp);
-
-  const checkTodo = (i) => {
-    const newAr = arr.map((elem, index) => {
-      if (i == index) {
-        elem.done = !elem.done;
-        return elem;
-      }
-      return elem;
-    });
-  };
-});
+btn.addEventListener("click", () => addTodo(inp));
